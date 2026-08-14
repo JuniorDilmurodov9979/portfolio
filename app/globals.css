@@ -27,9 +27,10 @@
 
 @layer base {
   html {
-    /* The palette is deliberately light-only; this opts out of Chrome's
-       auto-darkening, which would otherwise repaint every colour. */
-    color-scheme: light;
+    /* The palette is deliberately light-only. The `only` keyword is what
+       actually opts out of Chrome's forced auto-darkening — a bare
+       `light` is treated as a hint and gets overridden. */
+    color-scheme: only light;
     /* Lenis drives smooth scrolling; native smooth would fight it. */
     scroll-behavior: auto;
     -webkit-text-size-adjust: 100%;
