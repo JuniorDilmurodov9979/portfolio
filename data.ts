@@ -6,8 +6,7 @@ import type {
   SkillGroup,
 } from "@/types";
 
-/** Update once the production domain is attached in Vercel. */
-export const siteUrl = "https://jasur.dev";
+export const siteUrl = "https://juniordilmurodov.uz";
 
 export const profile = {
   name: "Jasur Dilmurodov",
