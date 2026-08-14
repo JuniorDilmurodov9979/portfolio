@@ -1,36 +1,101 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# jasur.dev
 
-## Getting Started
+Personal portfolio — single page, minimalist, paper-white palette with a girih-inspired
+line pattern behind the hero name.
 
-First, run the development server:
+## Stack
+
+| | |
+|---|---|
+| Framework | Next.js 16 (App Router), React 19, TypeScript strict |
+| Styling | Tailwind CSS v4 — tokens live in `app/globals.css` |
+| Motion | `motion` (Framer Motion 13) |
+| Smooth scroll | `lenis` |
+| Deploy | Vercel, zero config |
+
+## Getting started
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+npm install
+npm run dev      # http://localhost:3000
+npm run build    # production build
+npm run lint
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+> Port 3000 on this machine is currently occupied by another (Python) server on IPv4.
+> If `localhost:3000` shows a stale page, run `npm run dev -- -p 3100`.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Where things live
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```
+app/
+  layout.tsx            fonts, metadata, skip link, providers, analytics
+  page.tsx              section composition + Work section + footer + JSON-LD
+  globals.css           design tokens (@theme), base styles, caret animation
+  not-found.tsx         on-brand 404
+  opengraph-image.tsx   generated 1200×630 social card
+  icon.tsx              generated favicon
+  sitemap.ts robots.ts  generated at /sitemap.xml and /robots.txt
+components/
+  Nav.tsx               sticky nav, active-section indicator, Lenis scrollTo
+  Hero.tsx              staggered entrance
+  GirihPattern.tsx      tiled SVG lattice + cursor parallax
+  About.tsx  Experience.tsx  Skills.tsx  Contact.tsx
+  ProjectCard.tsx       hover lift + accent border overlay
+  Reveal.tsx            scroll-into-view wrapper (keeps sections server components)
+  SectionHeading.tsx    shared eyebrow + heading
+  SmoothScroll.tsx      Lenis + MotionConfig provider
+hooks/useMediaQuery.ts
+data.ts                 all copy: profile, projects, experience, skills, contact
+types/index.ts          Project, ExperienceItem, SkillGroup, NavLink, ContactLink
+```
 
-## Learn More
+## Editing content
 
-To learn more about Next.js, take a look at the following resources:
+Everything visible on the page comes from `data.ts`. No copy is hardcoded in JSX.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+### Project previews and access
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+Each project carries two fields that drive the card:
 
-## Deploy on Vercel
+- `access: "live" | "login" | "internal"` — anything other than `live` renders a
+  label so a visitor knows before clicking that they will hit a wall.
+- `image: string | null` — a path under `public/work/`. When it is `null` the card
+  renders a same-sized placeholder panel instead, so rows stay aligned.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+Current state: `tanlov` and `kuprikqurilish` have screenshots. AI Legal Bridge and the
+Internal ERP do not — both are behind authentication. To add them, take a screenshot
+while logged in, save it to `public/work/<slug>.jpg` (roughly 16:10, ~1300px wide) and
+set the `image` field.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## Changing the palette
+
+All colours are CSS variables in the `@theme` block of `app/globals.css`:
+
+```css
+--color-accent: #146b6b;   /* deep turquoise */
+```
+
+Swapping that one line changes the accent everywhere (nav underline, buttons, card
+hover border, girih pattern, favicon is separate — see `app/icon.tsx`).
+The sage alternative is `#4a6b4a`.
+
+## Before deploying
+
+1. Add the CV as `public/jasur-dilmurodov-cv.pdf` — the "Download CV" button points there.
+2. Set the real domain in `data.ts` (`siteUrl`) — metadata, OG, sitemap, robots and the
+   JSON-LD `Person` schema all read from it.
+3. Push to GitHub, import the repo in Vercel, deploy. No build settings to change.
+4. Enable Web Analytics in the Vercel project — `@vercel/analytics` is already wired up
+   and is a no-op until it is turned on.
+
+## Accessibility & motion
+
+- Skip-to-content link, visible focus ring on the accent colour, `aria-current` on the
+  active nav link.
+- `prefers-reduced-motion` disables Lenis entirely, drops the reveal/entrance transforms
+  (`MotionConfig reducedMotion="user"`), stops the terminal caret, and disables the
+  cursor parallax.
+- The girih parallax is also skipped on touch devices (`pointer: fine` only).
+- `color-scheme: light` opts out of Chrome's auto-darkening, which would otherwise
+  repaint the whole palette.

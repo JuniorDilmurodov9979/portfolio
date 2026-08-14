@@ -1,26 +1,106 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+/* ---------------------------------------------------------------
+   Design tokens — the single source of truth for the palette.
+   Swapping the accent is one line: change --color-accent below.
+   Alternative accent: #4A6B4A (sage green)
+   --------------------------------------------------------------- */
+@theme {
+  --color-paper: #fafaf7;
+  --color-ink: #1a1a18;
+  --color-muted: #6b6a63;
+  --color-accent: #146b6b;
+  --color-hairline: #e3e1d8;
+
+  --text-eyebrow: 0.6875rem;
+  --text-eyebrow--line-height: 1;
+  --text-eyebrow--letter-spacing: 0.14em;
 }
 
+/* Font families are injected by next/font on <html>, so they must be
+   referenced (not copied) — hence `inline`. */
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --font-sans: var(--font-inter);
+  --font-display: var(--font-space-grotesk);
+  --font-mono: var(--font-jetbrains-mono);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+@layer base {
+  html {
+    /* The palette is deliberately light-only; this opts out of Chrome's
+       auto-darkening, which would otherwise repaint every colour. */
+    color-scheme: light;
+    /* Lenis drives smooth scrolling; native smooth would fight it. */
+    scroll-behavior: auto;
+    -webkit-text-size-adjust: 100%;
+  }
+
+  body {
+    background-color: var(--color-paper);
+    color: var(--color-ink);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  ::selection {
+    background-color: color-mix(in srgb, var(--color-accent) 18%, transparent);
+    color: var(--color-ink);
+  }
+
+  /* Sections sit under the sticky nav when jumped to via anchor. */
+  section[id] {
+    scroll-margin-top: 6rem;
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--color-accent);
+    outline-offset: 3px;
+    border-radius: 2px;
+  }
+
+  /* Only remove the default outline where we provide our own. */
+  :focus:not(:focus-visible) {
+    outline: none;
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+@layer utilities {
+  /* Terminal caret next to the nav logo — CSS only, no JS. */
+  .caret {
+    display: inline-block;
+    width: 0.5ch;
+    background-color: var(--color-accent);
+    animation: caret-blink 1.1s steps(1, end) infinite;
+  }
+
+  .caret::before {
+    content: "\00a0";
+  }
+}
+
+@keyframes caret-blink {
+  0%,
+  50% {
+    opacity: 1;
+  }
+  50.01%,
+  100% {
+    opacity: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .caret {
+    animation: none;
+    opacity: 1;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
 }
