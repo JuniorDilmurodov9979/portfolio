@@ -115,7 +115,7 @@ export default function Nav(): React.JSX.Element {
           onClick={(event) => scrollTo(event, "#top")}
           className="shrink-0 font-mono text-[13px] text-ink sm:text-sm"
         >
-          jasur.dev
+          Jasur
           <span className="caret" />
         </a>
 

@@ -1,4 +1,6 @@
-# jasur.dev
+# Jasur — portfolio
+
+Live at [juniordilmurodov.uz](https://juniordilmurodov.uz)
 
 Personal portfolio — single page, minimalist, paper-white palette with a girih-inspired
 line pattern behind the hero name.

@@ -53,7 +53,7 @@ export const metadata: Metadata = {
     type: "website",
     locale: "en_US",
     url: siteUrl,
-    siteName: "jasur.dev",
+    siteName: "Jasur",
     title,
     description,
   },

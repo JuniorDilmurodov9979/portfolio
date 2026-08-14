@@ -69,7 +69,7 @@ export default function OpenGraphImage(): ImageResponse {
             color: MUTED,
           }}
         >
-          <div style={{ display: "flex" }}>jasur.dev</div>
+          <div style={{ display: "flex" }}>Jasur</div>
           <div style={{ display: "flex", color: ACCENT }}>
             React · Next.js · TypeScript
           </div>
