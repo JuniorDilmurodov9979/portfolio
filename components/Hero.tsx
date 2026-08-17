@@ -69,13 +69,13 @@ export default function Hero(): React.JSX.Element {
         <motion.div variants={item} className="mt-10 flex flex-wrap gap-3">
           <a
             href="#work"
-            className="bg-accent px-6 py-3 font-mono text-xs uppercase tracking-[0.12em] text-paper transition-opacity duration-150 hover:opacity-85"
+            className="rounded-md bg-accent px-6 py-3 font-mono text-xs uppercase tracking-[0.12em] text-paper transition-opacity duration-150 hover:opacity-85"
           >
             View work
           </a>
           <a
             href="#contact"
-            className="border border-hairline px-6 py-3 font-mono text-xs uppercase tracking-[0.12em] text-ink transition-colors duration-150 hover:border-accent hover:text-accent"
+            className="rounded-md border border-hairline px-6 py-3 font-mono text-xs uppercase tracking-[0.12em] text-ink transition-colors duration-150 hover:border-accent hover:text-accent"
           >
             Get in touch
           </a>

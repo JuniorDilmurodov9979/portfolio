@@ -76,9 +76,8 @@ export default function Home(): React.JSX.Element {
       <footer className="border-t border-hairline py-10">
         <div className="mx-auto flex w-full max-w-5xl flex-wrap items-center justify-between gap-3 px-6 font-mono text-xs text-muted md:px-10">
           <p>
-            © {new Date().getFullYear()} {profile.name}
+            Crafted by {profile.name} — Tashkent, {new Date().getFullYear()}
           </p>
-          <p>Built with Next.js &amp; Tailwind CSS</p>
         </div>
       </footer>
     </>
