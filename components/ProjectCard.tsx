@@ -2,6 +2,7 @@
 
 import { motion, type Variants } from "motion/react";
 import Image from "next/image";
+import { useEffect, useState } from "react";
 
 import type { Project, ProjectAccess } from "@/types";
 
@@ -35,6 +36,15 @@ const preview: Variants = {
   },
 };
 
+/**
+ * Tinted glass panel behind the tag row only — never over the screenshot,
+ * so thumbnail contrast is never at risk.
+ */
+const glassOverlay: Variants = {
+  rest: { opacity: 0, transition: { duration: 0.2 } },
+  hover: { opacity: 1, transition: { duration: 0.2 } },
+};
+
 /** Only flagged when a visitor cannot simply look at the thing. */
 const ACCESS_LABEL: Record<ProjectAccess, string | null> = {
   live: null,
@@ -47,6 +57,13 @@ export default function ProjectCard({
 }: ProjectCardProps): React.JSX.Element {
   const accessLabel = ACCESS_LABEL[project.access];
 
+  // Devices with no hover (touch) get the same glass reveal by scrolling
+  // the card into view instead.
+  const [isTouch, setIsTouch] = useState<boolean>(false);
+  useEffect(() => {
+    setIsTouch(window.matchMedia("(hover: none)").matches);
+  }, []);
+
   return (
     <motion.a
       href={project.href}
@@ -56,6 +73,8 @@ export default function ProjectCard({
       animate="rest"
       whileHover="hover"
       whileFocus="hover"
+      whileInView={isTouch ? "hover" : undefined}
+      viewport={isTouch ? { once: true, amount: 0.5 } : undefined}
       variants={card}
       className="relative flex h-full flex-col border border-hairline bg-paper"
     >
@@ -92,7 +111,10 @@ export default function ProjectCard({
           <h3 className="font-display text-lg tracking-tight sm:text-xl">
             {project.title}
           </h3>
-          <span aria-hidden="true" className="mt-1 font-mono text-sm text-muted">
+          <span
+            aria-hidden="true"
+            className="mt-1 font-mono text-sm text-muted"
+          >
             ↗
           </span>
         </div>
@@ -111,16 +133,23 @@ export default function ProjectCard({
           {project.description}
         </p>
 
-        <ul className="mt-7 flex flex-wrap gap-x-3 gap-y-2">
-          {project.tags.map((tag) => (
-            <li
-              key={tag}
-              className="border border-hairline px-2.5 py-1 font-mono text-[10px] uppercase tracking-[0.1em] text-muted"
-            >
-              {tag}
-            </li>
-          ))}
-        </ul>
+        <div className="relative mt-7 -m-2 p-2">
+          <motion.span
+            aria-hidden="true"
+            variants={glassOverlay}
+            className="pointer-events-none absolute inset-0 rounded-[inherit] bg-[#146B6B]/[0.08] backdrop-blur-[8px]"
+          />
+          <ul className="relative flex flex-wrap gap-x-3 gap-y-2">
+            {project.tags.map((tag) => (
+              <li
+                key={tag}
+                className="border border-hairline px-2.5 py-1 font-mono text-[10px] uppercase tracking-[0.1em] text-muted"
+              >
+                {tag}
+              </li>
+            ))}
+          </ul>
+        </div>
       </div>
 
       <span className="sr-only">(opens in a new tab)</span>
