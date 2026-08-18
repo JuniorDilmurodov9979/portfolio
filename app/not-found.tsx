@@ -20,7 +20,7 @@ export default function NotFound(): React.JSX.Element {
         </h1>
 
         <p className="mt-6 max-w-md text-base leading-relaxed text-muted">
-          That page does not exist. Everything on this site lives on one page.
+          That page does not exist.
         </p>
 
         <Link

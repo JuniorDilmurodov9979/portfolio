@@ -37,6 +37,23 @@ export interface SkillGroup {
   readonly items: readonly string[];
 }
 
+export type LabProjectStatus = "live" | "in-progress" | "archived";
+
+export interface LabProject {
+  readonly id: string;
+  readonly title: string;
+  readonly description: string;
+  readonly tags: readonly string[];
+  /** Live demo URL, if one exists. */
+  readonly href?: string;
+  readonly repoUrl?: string;
+  /** Path under /public/lab, optional while no screenshot exists yet. */
+  readonly image?: string;
+  readonly status: LabProjectStatus;
+  /** "YYYY-MM" */
+  readonly builtAt: string;
+}
+
 export interface NavLink {
   /** In-page anchor, e.g. "#work". */
   readonly href: string;

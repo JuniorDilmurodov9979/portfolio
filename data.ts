@@ -24,6 +24,7 @@ export const navLinks: readonly NavLink[] = [
   { href: "#work", label: "Work" },
   { href: "#experience", label: "Experience" },
   { href: "#skills", label: "Skills" },
+  { href: "/playground", label: "Playground" },
   { href: "#contact", label: "Contact" },
 ];
 
